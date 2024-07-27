@@ -7,13 +7,7 @@ class Materiel extends Possession {
     this.accroissement = accroissement;
   }
 
-  // Calculer la valeur future en fonction de la date cible
-  calculerValeurFuture(dateCible) {
-    const dateAcquisition = this.getDateAcquisition();
-    const anneeDifference = dateCible.getFullYear() - dateAcquisition.getFullYear();
-    const prixFuture = this.prix * (1 + this.accroissement / 100) ** anneeDifference;
-    return prixFuture;
-  }
+  
 }
 
 export default Materiel;

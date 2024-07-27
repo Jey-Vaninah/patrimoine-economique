@@ -68,35 +68,7 @@ function afficherPatrimoine(patrimoine,dateCible) {
   }
   
   afficherPatrimoine(patrimoine);
-//    let { totalPatrimoine, totalArgent, totalDepenses } = patrimoine.calculerPatrimoineFuture(new Date(dateCible));
 
-//     let tableauFutur = possessions.map(possession => {
-//         let montant = possession instanceof Argent ? possession.calculerValeurFuture(new Date(dateCible)) : 0;
-//         let prix = possession instanceof Materiel ? possession.calculerValeurFuture(new Date(dateCible)) : '0';
-//         let depense = possession instanceof TrainDeVie ? possession.getDepense() : '0';
-//         let benefice = possession instanceof Argent ? `${(possession.getBenefice() * 100).toFixed(2)}%` : '0';
-//         let accroissement = possession instanceof Materiel ? `${possession.getAccroissement()}%` : '0';
-
-//         return {
-//             Date: dateCible,
-//             Type: possession.getType(),
-//             Libelle: possession.getLibelle(),
-//             Montant: montant || 'N/A',
-//             Prix: prix,
-//             Depense: depense || 'N/A',
-//             Benefice: benefice,
-//             Accroissement: accroissement
-//         };
-//     });
-
-//     console.log(`\nPatrimoine estimé pour le ${dateCible}:`);
-//     console.table(tableauFutur);
-//     console.log(`Total du patrimoine estimé (hors dépenses): ${totalPatrimoine}`);
-//     console.log(`Total d'argent estimé: ${totalArgent}`);
-// }
-
-// Afficher le patrimoine actuel et futur pour le 26 juillet 2025
-// afficherPatrimoine(patrimoine, '2025-07-26');
 
 
   
