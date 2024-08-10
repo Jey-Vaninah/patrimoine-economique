@@ -1,0 +1,53 @@
+/* index.css */
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Gris très clair pour les lignes impaires */
+  }
+  
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff; /* Blanc pour les lignes paires */
+  }
+  
+  .table thead th {
+    background-color: #4CAF50; /* Vert pour l'en-tête du tableau */
+    color: white; /* Texte blanc pour les en-têtes */
+  }
+  
+  .table tbody td {
+    color: #333; /* Texte sombre pour les cellules */
+  }
+  
+  .table tfoot td {
+    background-color: #e0e0e0; /* Gris clair pour le pied du tableau */
+    font-weight: bold;
+  }
+  
+  .date-picker-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f7f7f7; /* Gris très clair pour le fond du conteneur du sélecteur de date */
+    border-radius: 5px;
+  }
+  
+  .total-value {
+    margin-top: 20px;
+    background-color: #4CAF50; /* Vert pour le fond */
+    color: white; /* Texte blanc */
+    padding: 10px;
+    border-radius: 5px;
+    width: 20vw;
+    
+  }
+  
+  .total-row {
+    background-color: #e0e0e0; /* Gris clair pour la ligne de total */
+  }
+  
+  .text-end {
+    text-align: right;
+  }
+  
+  .font-weight-bold {
+    font-weight: bold;
+  }
+  
