@@ -1,55 +1,70 @@
-import { useState, useEffect } from "react";
-import "./index.css";
-import { Table, Button } from "react-bootstrap";
+// // src/PossessionList.jsx
+// import React from 'react';
+
+// function PossessionList() {
+//   // Mock data for possessions
+//   const possessions = [
+//     { id: 1, libelle: 'Voiture', dateFin: '2024-12-31' },
+//     { id: 2, libelle: 'Maison', dateFin: '2030-01-01' },
+//   ];
+
+//   return (
+//     <div className="container mt-4">
+//       <h1>Liste des Possessions</h1>
+//       <table className="table">
+//         <thead>
+//           <tr>
+//             <th>ID</th>
+//             <th>Libellé</th>
+//             <th>Date de Fin</th>
+//             <th>Actions</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {possessions.map((possession) => (
+//             <tr key={possession.id}>
+//               <td>{possession.id}</td>
+//               <td>{possession.libelle}</td>
+//               <td>{possession.dateFin}</td>
+//               <td>
+//                 <button className="btn btn-warning">Modifier</button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+
+// export default PossessionList;
+// // // src/PossessionList.jsx
+
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Possession from "../../models/possessions/Possession.js"; 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Possession from '../../models/possessions/Possession'; 
 
 function PossessionList() {
   const [possessions, setPossessions] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalValue, setTotalValue] = useState(0);
   const [totalCurrentValue, setTotalCurrentValue] = useState(0); 
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedPossession, setSelectedPossession] = useState(null);
+  const [updateForm, setUpdateForm] = useState({ valeur: '', dateDebut: '', tauxAmortissement: '' });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:5000/possession");
-  //       const jsonData = await response.json();
-  //       console.log(jsonData.data.possessions);
-  //       const fetchedPossessions = jsonData.data.possessions;
-
-  //       const initialTotalCurrentValue = fetchedPossessions.reduce((sum, pos) => {
-  //         const possessionInstance = new Possession(
-  //           pos.possesseur.nom,
-  //           pos.libelle,
-  //           pos.valeur,
-  //           new Date(pos.dateDebut),
-  //           pos.dateFin ? new Date(pos.dateFin) : null,
-  //           pos.tauxAmortissement || 0
-  //         );
-  //         return sum + (possessionInstance.getValeurApresAmortissement(new Date()) || pos.valeur);
-  //       }, 0);
-
-  //       setPossessions(fetchedPossessions);
-  //       setTotalCurrentValue(initialTotalCurrentValue);
-  //     } catch (error) {
-  //       console.error("Error fetching possessions:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:5000/possession");
         const jsonData = await response.json();
-        console.log('API Response:', jsonData); // Log the full response
+        console.log('API Response:', jsonData); 
         
         if (jsonData) {
-          const fetchedPossessions = jsonData
+          const fetchedPossessions = jsonData;
   
           const initialTotalCurrentValue = fetchedPossessions.reduce((sum, pos) => {
             const possessionInstance = new Possession(
@@ -76,7 +91,6 @@ function PossessionList() {
     fetchData();
   }, []);
   
-
   const applyDate = () => {
     const updatedPossessions = possessions.map(possession => {
       const possessionInstance = new Possession(
@@ -107,6 +121,56 @@ function PossessionList() {
     setTotalValue(total);
   };
 
+  const handleUpdate = (poss) => {
+    setSelectedPossession(poss);
+    setUpdateForm({
+      valeur: poss.valeur,
+      dateDebut: new Date(poss.dateDebut).toISOString().split('T')[0],
+      tauxAmortissement: poss.tauxAmortissement
+    });
+    setShowUpdateModal(true);
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/possession/${selectedPossession.libelle}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          libelle: selectedPossession.libelle,
+          valeur: updateForm.valeur,
+          dateDebut: updateForm.dateDebut,
+          tauxAmortissement: updateForm.tauxAmortissement
+        })
+      });
+      const updatedPossession = await response.json();
+      setPossessions(possessions.map(p => p.libelle === updatedPossession.libelle ? updatedPossession : p));
+      setShowUpdateModal(false);
+    } catch (error) {
+      console.error('Error updating possession:', error);
+    }
+  };
+
+  const handleClose = (index) => {
+    const updatedPossessions = [...possessions];
+    updatedPossessions[index].dateFin = new Date().toISOString().split('T')[0];
+    setPossessions(updatedPossessions);
+  };
+
+  const handleDelete = async (index) => {
+    const possessionToDelete = possessions[index];
+    try {
+      await fetch(`http://localhost:5000/possession/${possessionToDelete.id}`, {
+        method: 'DELETE',
+      });
+      const updatedPossessions = possessions.filter((_, i) => i !== index);
+      setPossessions(updatedPossessions);
+    } catch (error) {
+      console.error('Error deleting possession:', error);
+    }
+  };
+
   return (
     <>
       <h1>Bienvenu sur votre Patrimoine</h1>
@@ -120,6 +184,7 @@ function PossessionList() {
             <th>Date Fin</th>
             <th>Amortissement</th>
             <th>Valeur Actuelle</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -132,11 +197,16 @@ function PossessionList() {
               <td>{poss.dateFin ? new Date(poss.dateFin).toLocaleDateString() : "N/A"}</td>
               <td>{poss.tauxAmortissement ? `${poss.tauxAmortissement}%` : "N/A"}</td>
               <td>{poss.valeurActuelle !== undefined ? poss.valeurActuelle.toFixed(2) : poss.valeur.toFixed(2)}</td>
+              <td>
+                <Button onClick={() => handleClose(index)} variant="info" size="sm" style={{ marginRight: '5px' }}>Fermer</Button>
+                <Button onClick={() => handleUpdate(poss)} variant="warning" size="sm" style={{ marginRight: '5px' }}>Mettre à jour</Button>
+                <Button onClick={() => handleDelete(index)} variant="danger" size="sm">Supprimer</Button>
+              </td>
             </tr>
           ))}
 
           <tr className="total-row">
-            <td colSpan="6" className="text-end font-weight-bold">Valeur Totale Actuelle Initiale:</td>
+            <td colSpan="7" className="text-end font-weight-bold">Valeur Totale Actuelle Initiale:</td>
             <td className="font-weight-bold">{totalCurrentValue.toFixed(2)}</td>
           </tr>
         </tbody>
@@ -155,9 +225,52 @@ function PossessionList() {
       <div className="total-value">
         <h3>Valeur Totale: {totalValue.toFixed(2)}</h3>
       </div>
+
+      {/* Modal pour la mise à jour */}
+      <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Mettre à jour la possession</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleUpdateSubmit}>
+            <Form.Group controlId="formValeur">
+              <Form.Label>Valeur</Form.Label>
+              <Form.Control
+                type="number"
+                value={updateForm.valeur}
+                onChange={(e) => setUpdateForm({ ...updateForm, valeur: e.target.value })}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formDateDebut">
+              <Form.Label>Date Début</Form.Label>
+              <Form.Control
+                type="date"
+                value={updateForm.dateDebut}
+                onChange={(e) => setUpdateForm({ ...updateForm, dateDebut: e.target.value })}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formTauxAmortissement">
+              <Form.Label>Taux d'Amortissement</Form.Label>
+              <Form.Control
+                type="number"
+                value={updateForm.tauxAmortissement}
+                onChange={(e) => setUpdateForm({ ...updateForm, tauxAmortissement: e.target.value })}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Sauvegarder
+            </Button>
+            <Button variant="secondary" onClick={() => setShowUpdateModal(false)} style={{ marginLeft: '10px' }}>
+              Annuler
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
 
 export default PossessionList;
-

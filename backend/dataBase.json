@@ -1,109 +1,143 @@
- [
-    { "model": "Personne", "data": { "nom": "John Doe" } },
-    
-    {
-      "model": "Patrimoine",
-      "data": {
-        "possesseur": { "nom": "John Doe" },
-        "possessions": [
-
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Especes",
-            "valeur": 400000,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 0.03,
-            "jour": 1,
-            "valeurConstante": 0
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Compte bancaire courant",
-            "valeur":600000 ,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 0.03,
-            "jour": 1,
-            "valeurConstante": 500000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Compte bancaire epargne",
-            "valeur":200000 ,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 0.02,
-            "jour": 1,
-            "valeurConstante": 500000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "vetements",
-            "valeur":100000 ,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 20,
-            "valeurConstante": 500000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "MacBook Pro",
-            "valeur": 4000000,
-            "dateDebut": "2023-12-25T00:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 5
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Vacance",
-            "valeur": 7500000,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": null,
-            "jour": 1,
-            "valeurConstante": 500000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Survie",
-            "valeur": 10000000,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": null,
-        
-            "valeurConstante": -300000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "loyer",
-            "valeur":200000 ,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement":null,
-            "jour": 1,
-            "valeurConstante": 500000
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "MacBook Pro",
-            "valeur": 4000000,
-            "dateDebut": "2023-12-25T00:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": 5
-          },
-          {
-            "possesseur": { "nom": "John Doe" },
-            "libelle": "Alternance",
-            "valeur": 150000,
-            "dateDebut": "2022-12-31T21:00:00.000Z",
-            "dateFin": null,
-            "tauxAmortissement": null,
-            "jour": 1,
-            "valeurConstante": 500000
-          }
-        ]
-      }
+[
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "John Doe"
     }
-  ]
-  
+  },
+  {
+    "model": "Patrimoine",
+    "data": {
+      "possesseur": {
+        "nom": "John Doe"
+      },
+      "possessions": [
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Especes",
+          "valeur": 400000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0.03,
+          "jour": 1,
+          "valeurConstante": 0
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Compte bancaire courant",
+          "valeur": 600000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0.03,
+          "jour": 1,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Compte bancaire epargne",
+          "valeur": 200000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0.02,
+          "jour": 1,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "vetements",
+          "valeur": 100000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 20,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "MacBook Pro",
+          "valeur": 4000000,
+          "dateDebut": "2023-12-25T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 5
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Vacance",
+          "valeur": 7500000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": null,
+          "jour": 1,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Survie",
+          "valeur": 10000000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": null,
+          "valeurConstante": -300000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "loyer",
+          "valeur": 200000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": null,
+          "jour": 1,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "MacBook Pro",
+          "valeur": 4000000,
+          "dateDebut": "2023-12-25T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 5
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Alternance",
+          "valeur": 150000,
+          "dateDebut": "2022-12-31T21:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": null,
+          "jour": 1,
+          "valeurConstante": 500000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Transport",
+          "valeur": 20000,
+          "dateDebut": "2024-08-27",
+          "dateFin": null,
+          "tauxAmortissement": 20,
+          "valeurConstante": null
+        }
+      ]
+    }
+  }
+]

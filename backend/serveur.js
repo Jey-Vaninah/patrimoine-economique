@@ -5,30 +5,15 @@ import Flux from "../models/possessions/Flux.js";
 import Possession from "../models/possessions/Possession.js";
 import axios from 'axios';
 import cors from 'cors';
-import express from 'express'
-import fs from 'node:fs'
+import express from 'express';
+import fs from 'node:fs';
 
 const app = express();
 const PORT = 5000;
+
 app.use(cors());
 app.use(express.json());
 
-// app.get('/possession', async (req, res) => {
-//   fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
-
-//     try {
-//       let data1 = JSON.parse(data)
-//       let data2 = data1.filter(e => e.model === "Patrimoine")
-//       console.log(data2);
-      
-//       console.log(data2);
-//       res.send(data2)
-
-//     } catch (error) {
-//       console.log(err)
-//     }
-//   })
-// })
 
 app.get('/possession', async (req, res) => {
   fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
@@ -49,39 +34,41 @@ app.get('/possession', async (req, res) => {
   });
 });
 
-app.listen(PORT,()=>{
-  console.log(`serveur is runing on http://localhost:${PORT}`)
-})
 
-// const john = new Personne("John Doe");
+app.post('/possession', async (req, res) => {
+  const newPossession = req.body;
 
-// const macBookPro = new Possession(john, "MacBook Pro", 4000000, new Date("2023-12-25"), null, 5);
-// const salaire = new Flux(john,"Alternance",500_000,new Date("2023-1-1"),null,null,1);
-// const traindevie = new Flux(john,"Survie",-300_000,new Date("2023-1-1"),null,null,2)
-// const possessions = [macBookPro,salaire,traindevie];
+  fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).send("Error reading the file");
+    }
 
+    try {
+      let data1 = JSON.parse(data);
+      let patrimoineIndex = data1.findIndex(e => e.model === "Patrimoine");
 
-// const johnPatrimoine  = new Patrimoine(john,possessions);
+      if (patrimoineIndex === -1) {
+        return res.status(404).send("Patrimoine not found");
+      }
 
-// johnPatrimoine.addPossession(macBookPro);
-// johnPatrimoine.addPossession(salaire);
-// johnPatrimoine.addPossession(traindevie);
+      let patrimoineData = data1[patrimoineIndex];
+      patrimoineData.data.possessions.push(newPossession);
+      data1[patrimoineIndex] = patrimoineData;
 
-// function save(personne, patrimoine) {
-//   const file = []
-//   file.push({
-//     model: "Personne",
-//     data: personne
-//   })
-//   file.push({
-//     model: "Patrimoine",
-//     data: patrimoine
-//   })
-//   return writeFile("./fileManager/data.json", file)
+      fs.writeFile('./backend/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
+        if (err) {
+          return res.status(500).send("Error writing to the file");
+        }
+        res.status(201).send("Possession added successfully");
+      });
 
-// }
-// function read() {
-//   return readFile("./fileManager/data.json")
-// }
+    } catch (error) {
+      console.error("Error parsing JSON data:", error);
+      res.status(500).send("Error parsing JSON data");
+    }
+  });
+});
 
-// export {save, read}
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
