@@ -136,6 +136,17 @@
           "dateFin": null,
           "tauxAmortissement": 20,
           "valeurConstante": null
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "telephone",
+          "valeur": 250000,
+          "dateDebut": "2024-08-30",
+          "dateFin": "2024-08-31",
+          "tauxAmortissement": 5,
+          "valeurConstante": null
         }
       ]
     }

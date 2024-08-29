@@ -1,45 +1,3 @@
-// // src/PossessionList.jsx
-// import React from 'react';
-
-// function PossessionList() {
-//   // Mock data for possessions
-//   const possessions = [
-//     { id: 1, libelle: 'Voiture', dateFin: '2024-12-31' },
-//     { id: 2, libelle: 'Maison', dateFin: '2030-01-01' },
-//   ];
-
-//   return (
-//     <div className="container mt-4">
-//       <h1>Liste des Possessions</h1>
-//       <table className="table">
-//         <thead>
-//           <tr>
-//             <th>ID</th>
-//             <th>Libellé</th>
-//             <th>Date de Fin</th>
-//             <th>Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {possessions.map((possession) => (
-//             <tr key={possession.id}>
-//               <td>{possession.id}</td>
-//               <td>{possession.libelle}</td>
-//               <td>{possession.dateFin}</td>
-//               <td>
-//                 <button className="btn btn-warning">Modifier</button>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// }
-
-// export default PossessionList;
-// // // src/PossessionList.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -226,7 +184,7 @@ function PossessionList() {
         <h3>Valeur Totale: {totalValue.toFixed(2)}</h3>
       </div>
 
-      {/* Modal pour la mise à jour */}
+      
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Mettre à jour la possession</Modal.Title>

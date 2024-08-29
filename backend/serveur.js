@@ -1,9 +1,9 @@
-import { readFile, writeFile } from "../data/index.js";
-import Patrimoine from "../models/Patrimoine.js";
-import Personne from "../models/Personne.js";
-import Flux from "../models/possessions/Flux.js";
-import Possession from "../models/possessions/Possession.js";
-import axios from 'axios';
+ import { readFile, writeFile } from "../data/index.js";
+ import Patrimoine from "../models/Patrimoine.js";
+ import Personne from "../models/Personne.js";
+ import Flux from "../models/possessions/Flux.js";
+ import Possession from "../models/possessions/Possession.js";
+ import axios from 'axios';
 import cors from 'cors';
 import express from 'express';
 import fs from 'node:fs';

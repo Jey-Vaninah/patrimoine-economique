@@ -1,63 +1,132 @@
-/* Global Styles */
 body {
-    background-color: #121212; /* Couleur de fond noire */
-    color: #e0e0e0; /* Couleur du texte gris clair */
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: auto;
-  }
-  
-  h1, h2, h3 {
-    color: #4caf50; /* Couleur des titres vert foncé */
-  }
-  
-  button {
-    background-color: #333; /* Couleur de fond des boutons gris foncé */
-    color: #fff; /* Couleur du texte des boutons blanc */
-  }
-  
-  button:hover {
-    background-color: #555; /* Couleur de fond des boutons au survol gris moyen */
-  }
-  
-  /* Navbar Styles */
-  .navbar {
-    background-color: #333; /* Couleur de fond de la navbar gris foncé */
-  }
-  
-  .navbar-brand, .nav-link {
-    color: #e0e0e0; /* Couleur du texte de la navbar gris clair */
-  }
-  
-  .navbar-brand:hover, .nav-link:hover {
-    color: #4caf50; /* Couleur du texte de la navbar au survol vert foncé */
-  }
-  
-  /* Form Styles */
-  .form-control {
-    border-color: #4caf50; /* Bordure des champs de formulaire verte */
-    background-color: #1e1e1e; /* Couleur de fond des champs de formulaire gris foncé */
-    color: #e0e0e0; /* Couleur du texte des champs de formulaire gris clair */
-  }
-  
-  .form-control:focus {
-    border-color: #4caf50; /* Bordure des champs de formulaire au focus verte */
-    box-shadow: 0 0 0 .2rem rgba(76, 175, 80, .25); /* Ombre verte */
-  }
-  
-  /* Table Styles */
-  .table thead th {
-    background-color: #333; /* Couleur de fond des en-têtes de table gris foncé */
-    color: #e0e0e0; /* Couleur du texte des en-têtes de table gris clair */
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #1e1e1e; /* Couleur de fond des lignes paires gris foncé */
-  }
-  
-  .table tbody tr:hover {
-    background-color: #2c2c2c; /* Couleur de fond des lignes au survol gris moyen */
-  }
-  
+  background-color: #121212; 
+  color: #e0e0e0; 
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+h1, h2, h3 {
+  color: #4caf50; 
+}
+
+button {
+  background-color: #333; 
+  color: #fff; 
+}
+
+button:hover {
+  background-color: #555; 
+}
+
+.cote{
+  margin-left: 62vw;
+}
+
+
+.navbar {
+  background-color: #333; 
+}
+
+.navbar-brand, .nav-link {
+  color: #e0e0e0; 
+  transition: color 0.3s ease; 
+}
+
+.navbar-brand:hover, .nav-link:hover {
+  color: #fff; 
+}
+
+
+.form-control {
+  border-color: #4caf50; 
+  background-color: #1e1e1e; 
+  color: #e0e0e0; 
+}
+
+.form-control:focus {
+  border-color: #4caf50; 
+  box-shadow: 0 0 0 .2rem rgba(76, 175, 80, .25); 
+}
+
+/* Table Styles */
+.table thead th {
+  background-color: #333; 
+  color: #e0e0e0; 
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #1e1e1e; 
+}
+
+.table tbody tr:hover {
+  background-color: #2c2c2c; 
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #f8f9fa; 
+}
+
+.text-green {
+  color: #28a745; 
+}
+
+.text-muted {
+  color: #6c757d; 
+}
+
+.btn-dark {
+  background-color: #343a40; 
+  border-color: #343a40;
+  color: #fff;
+}
+
+.btn-dark:hover {
+  background-color: #23272b; 
+  border-color: #1d2124;
+}
+
+.btn-light {
+  background-color: #f8f9fa; 
+  border-color: #f8f9fa;
+  color: #343a40; 
+}
+
+.btn-light:hover {
+  background-color: #e2e6ea; 
+  border-color: #dae0e5;
+}
+
+.btn-group .btn {
+  margin: 0 10px;
+}
+
+
+.navbar {
+  background-color: #343a40; 
+}
+
+.navbar .nav-link {
+  color: #fff; 
+}
+
+.navbar .nav-link:hover {
+  color: #e2e6ea; 
+}
+
+.navbar-brand {
+  color: #fff; 
+}
+
+.navbar-brand:hover {
+  color: #e2e6ea; 
+}
+
+

@@ -5,34 +5,30 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import './App.css'; // Assurez-vous d'importer votre fichier CSS personnalisé
+import './App.css';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale);
 
 function LineChartPage() {
   const [dateDebut, setDateDebut] = useState(new Date());
   const [dateFin, setDateFin] = useState(new Date());
-  const [jour, setJour] = useState(new Date());
+  const [jour, setJour] = useState(new Date().getDate());
   const [rangeData, setRangeData] = useState({ labels: [], datasets: [] });
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [singleDateData, setSingleDateData] = useState({ labels: [], datasets: [] });
-  const [additionalChartData, setAdditionalChartData] = useState({ labels: [], datasets: [] });
 
   useEffect(() => {
     fetchRangeData();
-    fetchSingleDateData();
-    fetchAdditionalChartData();
-  }, []);
+  }, [dateDebut, dateFin, jour]);
 
   const fetchRangeData = async () => {
     try {
       const response = await axios.get('http://localhost:5000/patrimoine/range', {
         params: {
-          type: jour.toISOString().split('T')[0],
           dateDebut: dateDebut.toISOString(),
-          dateFin: dateFin.toISOString()
+          dateFin: dateFin.toISOString(),
+          jour: jour
         },
       });
+
       const fetchedData = response.data;
       setRangeData({
         labels: fetchedData.labels,
@@ -47,51 +43,7 @@ function LineChartPage() {
         ],
       });
     } catch (error) {
-      console.error('Error fetching range data:', error);
-    }
-  };
-
-  const fetchSingleDateData = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/patrimoine/date', {
-        params: { date: selectedDate.toISOString() },
-      });
-      const fetchedData = response.data;
-      setSingleDateData({
-        labels: fetchedData.labels,
-        datasets: [
-          {
-            label: 'Valeur du Patrimoine pour la Date Sélectionnée',
-            data: fetchedData.values,
-            borderColor: 'rgba(153, 102, 255, 1)',
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            fill: true,
-          },
-        ],
-      });
-    } catch (error) {
-      console.error('Error fetching single date data:', error);
-    }
-  };
-
-  const fetchAdditionalChartData = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/patrimoine/additional-data');
-      const fetchedData = response.data;
-      setAdditionalChartData({
-        labels: fetchedData.labels,
-        datasets: [
-          {
-            label: 'Données Complémentaires',
-            data: fetchedData.values,
-            borderColor: 'rgba(255, 159, 64, 1)',
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            fill: true,
-          },
-        ],
-      });
-    } catch (error) {
-      console.error('Error fetching additional chart data:', error);
+      console.error('Erreur lors de la récupération des données:', error);
     }
   };
 
@@ -121,10 +73,10 @@ function LineChartPage() {
             </Form.Group>
             <Form.Group controlId="jour">
               <Form.Label>Jour</Form.Label>
-              <DatePicker
-                selected={jour}
-                onChange={(date) => setJour(date)}
-                dateFormat="yyyy-MM-dd"
+              <input
+                type="number"
+                value={jour}
+                onChange={(e) => setJour(e.target.value)}
                 className="form-control"
               />
             </Form.Group>
@@ -136,14 +88,6 @@ function LineChartPage() {
         <Col md={12}>
           <h3 className="text-green mt-4">Valeur du Patrimoine (Plage de Dates)</h3>
           <Line data={rangeData} />
-        </Col>
-        <Col md={12}>
-          <h3 className="text-green mt-4">Valeur du Patrimoine pour la Date Sélectionnée</h3>
-          <Line data={singleDateData} />
-        </Col>
-        <Col md={12}>
-          <h3 className="text-green mt-4">Données Complémentaires</h3>
-          <Line data={additionalChartData} />
         </Col>
       </Row>
     </Container>

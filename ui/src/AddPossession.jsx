@@ -8,7 +8,10 @@ function AddPossession() {
   const [libelle, setLibelle] = useState("");
   const [valeur, setValeur] = useState("");
   const [dateDebut, setDateDebut] = useState("");
+  const [dateFin, setDateFin] = useState(""); // Nouveau champ
   const [taux, setTaux] = useState("");
+  const [possesseur, setPossesseur] = useState("John Doe"); // Valeur par défaut pour le nom
+  const [valeurConstante, setValeurConstante] = useState(null); // Valeur par défaut
 
   const navigate = useNavigate();
 
@@ -16,10 +19,15 @@ function AddPossession() {
     event.preventDefault();
     
     const newPossession = {
+      possesseur: {
+        nom: possesseur,
+      },
       libelle,
       valeur: parseFloat(valeur),
       dateDebut,
-      taux: parseFloat(taux),
+      dateFin: dateFin ? dateFin : null, // Utiliser null si dateFin n'est pas fourni
+      tauxAmortissement: taux ? parseFloat(taux) : 0, // Utiliser 0 si taux n'est pas fourni
+      valeurConstante
     };
 
     try {
@@ -78,6 +86,14 @@ function AddPossession() {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label>Date Fin</Form.Label>
+          <Form.Control
+            type="date"
+            value={dateFin}
+            onChange={(e) => setDateFin(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Taux d'Amortissement</Form.Label>
           <Form.Control
             type="number"
@@ -85,6 +101,25 @@ function AddPossession() {
             placeholder="Entrez le taux d'amortissement"
             value={taux}
             onChange={(e) => setTaux(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Nom du Possesseur</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Entrez le nom du possesseur"
+            value={possesseur}
+            onChange={(e) => setPossesseur(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Valeur Constante</Form.Label>
+          <Form.Control
+            type="number"
+            step="0.01"
+            placeholder="Entrez la valeur constante"
+            value={valeurConstante || ''}
+            onChange={(e) => setValeurConstante(e.target.value ? parseFloat(e.target.value) : null)}
           />
         </Form.Group>
         <Button variant="primary" type="submit">
