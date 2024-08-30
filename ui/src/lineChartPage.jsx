@@ -1,19 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, CategoryScale, LinearScale } from 'chart.js';
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+ } from 'chart.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import './App.css';
 
-ChartJS.register(LineElement, CategoryScale, LinearScale);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function LineChartPage() {
-  const [dateDebut, setDateDebut] = useState(new Date());
-  const [dateFin, setDateFin] = useState(new Date());
-  const [jour, setJour] = useState(new Date().getDate());
+  const [query, setQuery] = useState({
+    dateDebut: new Date().toISOString(),
+    dateFin: new Date().toISOString(),
+    jour: new Date().getDate()
+  });
   const [rangeData, setRangeData] = useState({ labels: [], datasets: [] });
+  const { dateDebut, dateFin, jour } = query;
 
   useEffect(() => {
     fetchRangeData();
@@ -21,21 +41,21 @@ function LineChartPage() {
 
   const fetchRangeData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/patrimoine/range', {
+      const response = await axios.get('http://localhost:5000/graphics', {
         params: {
-          dateDebut: dateDebut.toISOString(),
-          dateFin: dateFin.toISOString(),
-          jour: jour
+          dateDebut,
+          dateFin,
+          jour: jour || 0
         },
       });
-
       const fetchedData = response.data;
+
       setRangeData({
-        labels: fetchedData.labels,
+        labels: fetchedData.map(res => new Date(res.date).toLocaleString()),
         datasets: [
           {
             label: 'Valeur du Patrimoine',
-            data: fetchedData.values,
+            data: fetchedData.map(res => res.value),
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             fill: true,
@@ -57,7 +77,7 @@ function LineChartPage() {
               <Form.Label>Date Début</Form.Label>
               <DatePicker
                 selected={dateDebut}
-                onChange={(date) => setDateDebut(date)}
+                onChange={(date) => setQuery(prev => ({ ...prev, dateDebut: date }))}
                 dateFormat="yyyy-MM-dd"
                 className="form-control"
               />
@@ -66,7 +86,7 @@ function LineChartPage() {
               <Form.Label>Date Fin</Form.Label>
               <DatePicker
                 selected={dateFin}
-                onChange={(date) => setDateFin(date)}
+                onChange={(date) => setQuery(prev => ({ ...prev, dateFin: date }))}
                 dateFormat="yyyy-MM-dd"
                 className="form-control"
               />
@@ -76,7 +96,7 @@ function LineChartPage() {
               <input
                 type="number"
                 value={jour}
-                onChange={(e) => setJour(e.target.value)}
+                onChange={(event) => setQuery(prev => ({ ...prev, jour: event.target.value }))}
                 className="form-control"
               />
             </Form.Group>

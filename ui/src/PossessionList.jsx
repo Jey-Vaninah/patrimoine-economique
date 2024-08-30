@@ -12,7 +12,7 @@ function PossessionList() {
   const [totalCurrentValue, setTotalCurrentValue] = useState(0); 
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedPossession, setSelectedPossession] = useState(null);
-  const [updateForm, setUpdateForm] = useState({ valeur: '', dateDebut: '', tauxAmortissement: '' });
+  const [updateForm, setUpdateForm] = useState({ libelle: '', dateFin: '' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,9 +82,8 @@ function PossessionList() {
   const handleUpdate = (poss) => {
     setSelectedPossession(poss);
     setUpdateForm({
-      valeur: poss.valeur,
-      dateDebut: new Date(poss.dateDebut).toISOString().split('T')[0],
-      tauxAmortissement: poss.tauxAmortissement
+      libelle: poss.libelle,
+      dateFin: poss.dateFin ? new Date(pos.dateFin).toISOString().split('T')[0] : ''
     });
     setShowUpdateModal(true);
   };
@@ -96,10 +95,8 @@ function PossessionList() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          libelle: selectedPossession.libelle,
-          valeur: updateForm.valeur,
-          dateDebut: updateForm.dateDebut,
-          tauxAmortissement: updateForm.tauxAmortissement
+          libelle: updateForm.libelle,
+          dateFin: updateForm.dateFin
         })
       });
       const updatedPossession = await response.json();
@@ -110,16 +107,29 @@ function PossessionList() {
     }
   };
 
-  const handleClose = (index) => {
-    const updatedPossessions = [...possessions];
-    updatedPossessions[index].dateFin = new Date().toISOString().split('T')[0];
-    setPossessions(updatedPossessions);
+  const handleClose = async (index) => {
+    const possessionToClose = possessions[index];
+    try {
+      await fetch(`http://localhost:5000/possession/${possessionToClose.libelle}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...possessionToClose,
+          dateFin: new Date().toISOString().split('T')[0]
+        })
+      });
+      const updatedPossessions = [...possessions];
+      updatedPossessions[index].dateFin = new Date().toISOString().split('T')[0];
+      setPossessions(updatedPossessions);
+    } catch (error) {
+      console.error('Error closing possession:', error);
+    }
   };
 
   const handleDelete = async (index) => {
     const possessionToDelete = possessions[index];
     try {
-      await fetch(`http://localhost:5000/possession/${possessionToDelete.id}`, {
+      await fetch(`http://localhost:5000/possession/${possessionToDelete.libelle}`, {
         method: 'DELETE',
       });
       const updatedPossessions = possessions.filter((_, i) => i !== index);
@@ -184,38 +194,27 @@ function PossessionList() {
         <h3>Valeur Totale: {totalValue.toFixed(2)}</h3>
       </div>
 
-      
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Mettre à jour la possession</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleUpdateSubmit}>
-            <Form.Group controlId="formValeur">
-              <Form.Label>Valeur</Form.Label>
+            <Form.Group controlId="formLibelle">
+              <Form.Label>Libelle</Form.Label>
               <Form.Control
-                type="number"
-                value={updateForm.valeur}
-                onChange={(e) => setUpdateForm({ ...updateForm, valeur: e.target.value })}
+                type="text"
+                value={updateForm.libelle}
+                onChange={(e) => setUpdateForm({ ...updateForm, libelle: e.target.value })}
                 required
               />
             </Form.Group>
-            <Form.Group controlId="formDateDebut">
-              <Form.Label>Date Début</Form.Label>
+            <Form.Group controlId="formDateFin">
+              <Form.Label>Date Fin</Form.Label>
               <Form.Control
                 type="date"
-                value={updateForm.dateDebut}
-                onChange={(e) => setUpdateForm({ ...updateForm, dateDebut: e.target.value })}
-                required
-              />
-            </Form.Group>
-            <Form.Group controlId="formTauxAmortissement">
-              <Form.Label>Taux d'Amortissement</Form.Label>
-              <Form.Control
-                type="number"
-                value={updateForm.tauxAmortissement}
-                onChange={(e) => setUpdateForm({ ...updateForm, tauxAmortissement: e.target.value })}
-                required
+                value={updateForm.dateFin}
+                onChange={(e) => setUpdateForm({ ...updateForm, dateFin: e.target.value })}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
