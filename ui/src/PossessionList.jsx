@@ -141,7 +141,7 @@ function PossessionList() {
 
   return (
     <>
-      <h1>Bienvenu sur votre Patrimoine</h1>
+      <br /><br />
       <Table striped bordered hover>
         <thead>
           <tr>

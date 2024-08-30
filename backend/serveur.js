@@ -1,6 +1,7 @@
+import cors from 'cors';
 import express from 'express';
 import fs from 'node:fs';
-import cors from 'cors';
+import { DATABASE_PATH, getDateRange, getPossessionsFromData, mapToPossessionModel, readDatabase } from './utils.js';
 
 const app = express();
 const PORT = 5000;
@@ -9,58 +10,58 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/possession', async (req, res) => {
-  fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).send("Error reading the file");
-    }
-
-    try {
-      let data1 = JSON.parse(data);
-      let patrimoineData = data1.filter(e => e.model === "Patrimoine");
-      let possessions = patrimoineData.map(e => e.data.possessions).flat();
-      res.json(possessions);
-
-    } catch (error) {
-      console.error("Error parsing JSON data:", error);
-      res.status(500).send("Error parsing JSON data");
-    }
-  });
+  try {
+    return res.send(getPossessionsFromData(readDatabase()));
+  } catch (error) {
+    console.error("Error parsing JSON data:", error);
+    res.status(500).send("Error parsing JSON data");
+  }
 });
-
 
 app.post('/possession', async (req, res) => {
   const newPossession = req.body;
+  try {
+    const data1 = readDatabase();
+    const patrimoineIndex = data1.findIndex(e => e.model === "Patrimoine");
 
-  fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).send("Error reading the file");
+    if (patrimoineIndex === -1) {
+      return res.status(404).send("Patrimoine not found");
     }
 
-    try {
-      let data1 = JSON.parse(data);
-      let patrimoineIndex = data1.findIndex(e => e.model === "Patrimoine");
+    const patrimoineData = data1[patrimoineIndex];
+    patrimoineData.data.possessions.push(newPossession);
+    data1[patrimoineIndex] = patrimoineData;
 
-      if (patrimoineIndex === -1) {
-        return res.status(404).send("Patrimoine not found");
+    fs.writeFile(DATABASE_PATH, JSON.stringify(data1, null, 2), (err) => {
+      if (err) {
+        return res.status(500).send("Error writing to the file");
       }
-
-      let patrimoineData = data1[patrimoineIndex];
-      patrimoineData.data.possessions.push(newPossession);
-      data1[patrimoineIndex] = patrimoineData;
-
-      fs.writeFile('./backend/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
-        if (err) {
-          return res.status(500).send("Error writing to the file");
-        }
-        res.status(201).send("Possession added successfully");
-      });
-
-    } catch (error) {
-      console.error("Error parsing JSON data:", error);
-      res.status(500).send("Error parsing JSON data");
-    }
-  });
+      res.status(201).send("Possession added successfully");
+    });
+  } catch (error) {
+    console.error("Error parsing JSON data:", error);
+    res.status(500).send("Error parsing JSON data");
+  }
 });
+
+app.get('/graphics', (req, res) => {
+  const { dateDebut, dateFin, jour } = req.query;
+
+  try {
+    const possessions = getPossessionsFromData(readDatabase()).map(pos => mapToPossessionModel(pos));
+    const dates = getDateRange(dateDebut, dateFin, jour);
+
+    return res.send(dates.map(date => {
+      const patrimoineValue = possessions.reduce((sum, pos) => {
+        return sum + (pos.getValeurApresAmortissement(date) || pos.valeur);
+      }, 0);
+      return { date, value: patrimoineValue }
+    }));
+  } catch(error) {
+    console.error("Error parsing JSON data:", error);
+    res.status(500).send("Error parsing JSON data");
+  }
+})
 
 app.put('/possession/:libelle', async (req, res) => {
   const libelle = req.params.libelle;
@@ -145,6 +146,7 @@ app.delete('/possession/:libelle', async (req, res) => {
     }
   });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
