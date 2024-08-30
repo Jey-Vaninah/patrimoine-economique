@@ -19,8 +19,8 @@
           "libelle": "Especess",
           "valeur": 400000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
-          "dateFin": "2024-08-19",
-          "tauxAmortissement": 0.03,
+          "dateFin": "",
+          "tauxAmortissement": 0,
           "jour": 1,
           "valeurConstante": 0
         },
@@ -31,8 +31,8 @@
           "libelle": "Compte bancaire courant",
           "valeur": 600000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
-          "dateFin": null,
-          "tauxAmortissement": 0.03,
+          "dateFin": "2024-08-30",
+          "tauxAmortissement": 0,
           "jour": 1,
           "valeurConstante": 500000
         },
@@ -44,7 +44,7 @@
           "valeur": 200000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
           "dateFin": null,
-          "tauxAmortissement": 0.02,
+          "tauxAmortissement": 0,
           "jour": 1,
           "valeurConstante": 500000
         },
@@ -56,7 +56,7 @@
           "valeur": 100000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
           "dateFin": null,
-          "tauxAmortissement": 20,
+          "tauxAmortissement": 0,
           "valeurConstante": 500000
         },
         {
@@ -67,13 +67,13 @@
           "valeur": 4000000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
           "dateFin": null,
-          "tauxAmortissement": 5
+          "tauxAmortissement": 0
         },
         {
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Vacance ",
+          "libelle": "Vacance be",
           "valeur": 7500000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
           "dateFin": "",
@@ -85,10 +85,10 @@
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Survie be",
+          "libelle": "Survie",
           "valeur": 10000000,
           "dateDebut": "2022-12-31T21:00:00.000Z",
-          "dateFin": "",
+          "dateFin": null,
           "tauxAmortissement": null,
           "valeurConstante": -300000
         },
@@ -112,17 +112,17 @@
           "valeur": 4000000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
           "dateFin": null,
-          "tauxAmortissement": 5
+          "tauxAmortissement": 0
         },
         {
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Transportsss",
+          "libelle": "Transports",
           "valeur": 20000,
           "dateDebut": "2024-08-27",
           "dateFin": "",
-          "tauxAmortissement": 20,
+          "tauxAmortissement": 0,
           "valeurConstante": null
         }
       ]
