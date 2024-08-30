@@ -8,10 +8,10 @@ function AddPossession() {
   const [libelle, setLibelle] = useState("");
   const [valeur, setValeur] = useState("");
   const [dateDebut, setDateDebut] = useState("");
-  const [dateFin, setDateFin] = useState(""); // Nouveau champ
+  const [dateFin, setDateFin] = useState(""); 
   const [taux, setTaux] = useState("");
-  const [possesseur, setPossesseur] = useState("John Doe"); // Valeur par défaut pour le nom
-  const [valeurConstante, setValeurConstante] = useState(null); // Valeur par défaut
+  const [possesseur, setPossesseur] = useState("John Doe"); 
+  const [valeurConstante, setValeurConstante] = useState(null); 
 
   const navigate = useNavigate();
 
@@ -25,8 +25,8 @@ function AddPossession() {
       libelle,
       valeur: parseFloat(valeur),
       dateDebut,
-      dateFin: dateFin ? dateFin : null, // Utiliser null si dateFin n'est pas fourni
-      tauxAmortissement: taux ? parseFloat(taux) : 0, // Utiliser 0 si taux n'est pas fourni
+      dateFin: dateFin ? dateFin : null, 
+      tauxAmortissement: taux ? parseFloat(taux) : 0, 
       valeurConstante
     };
 

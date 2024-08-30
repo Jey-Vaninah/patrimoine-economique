@@ -8,7 +8,6 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-// Route GET pour récupérer toutes les possessions
 app.get('/possession', async (req, res) => {
   fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
     if (err) {
@@ -28,7 +27,7 @@ app.get('/possession', async (req, res) => {
   });
 });
 
-// Route POST pour ajouter une nouvelle possession
+
 app.post('/possession', async (req, res) => {
   const newPossession = req.body;
 
@@ -63,7 +62,6 @@ app.post('/possession', async (req, res) => {
   });
 });
 
-// Route PUT pour mettre à jour une possession
 app.put('/possession/:libelle', async (req, res) => {
   const libelle = req.params.libelle;
   const updatedData = req.body;
@@ -107,7 +105,6 @@ app.put('/possession/:libelle', async (req, res) => {
   });
 });
 
-// Route DELETE pour supprimer une possession
 app.delete('/possession/:libelle', async (req, res) => {
   const libelle = req.params.libelle;
 
