@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; 
+// import '../App.css'; 
 
 function AddPossession() {
   const [libelle, setLibelle] = useState("");

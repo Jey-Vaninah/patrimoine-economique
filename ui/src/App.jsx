@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './Home';
-import AddPossession from './AddPossession';
-import Navigation from './Navigation'; 
+import Home from './components/Home';
+import AddPossession from './components/AddPossession';
+import Navigation from './components/Navigation'; 
 import PossessionList from './PossessionList';
 import LineChartPage from './LineChartPage';
 

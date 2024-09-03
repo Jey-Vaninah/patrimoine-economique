@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; 
+import '../App.css'; 
 
 function Navigation() {
   return (
     <Navbar className="navbar" expand="lg">
-      <Navbar.Brand as={Link} to="/">Accueil</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/" className="nav-link-black">Accueil</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
+        <Nav className="mr-auto ">
           <Nav.Link as={Link} to="/possessions">Liste des Possessions</Nav.Link>
           <Nav.Link as={Link} to="/chart">Graphique</Nav.Link>
         </Nav>
