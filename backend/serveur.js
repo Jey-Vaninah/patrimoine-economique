@@ -106,46 +106,6 @@ app.put('/possession/:libelle', async (req, res) => {
   });
 });
 
-app.delete('/possession/:libelle', async (req, res) => {
-  const libelle = req.params.libelle;
-
-  fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).send("Error reading the file");
-    }
-
-    try {
-      let data1 = JSON.parse(data);
-      let patrimoineIndex = data1.findIndex(e => e.model === "Patrimoine");
-
-      if (patrimoineIndex === -1) {
-        return res.status(404).send("Patrimoine not found");
-      }
-
-      let patrimoineData = data1[patrimoineIndex];
-      let possessions = patrimoineData.data.possessions;
-      let newPossessions = possessions.filter(p => p.libelle !== libelle);
-
-      if (possessions.length === newPossessions.length) {
-        return res.status(404).send("Possession not found");
-      }
-
-      patrimoineData.data.possessions = newPossessions;
-      data1[patrimoineIndex] = patrimoineData;
-
-      fs.writeFile('./backend/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
-        if (err) {
-          return res.status(500).send("Error writing to the file");
-        }
-        res.status(204).send();
-      });
-
-    } catch (error) {
-      console.error("Error parsing JSON data:", error);
-      res.status(500).send("Error parsing JSON data");
-    }
-  });
-});
 
 
 app.listen(PORT, () => {

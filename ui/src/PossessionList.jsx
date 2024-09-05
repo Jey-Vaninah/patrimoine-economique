@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Possession from '../../models/possessions/Possession';
 import Flux from '../../models/possessions/Flux';
 import BienMateriel from '../../models/possessions/BienMateriel';
 
@@ -23,31 +24,20 @@ function PossessionList() {
         console.log('API Response:', jsonData);
 
         if (jsonData) {
-          const updatedPossessions = jsonData.map(pos => {
-            const possessionInstance = pos.tauxAmortissement
-              ? new BienMateriel(
-                  pos.possesseur.nom,
-                  pos.libelle,
-                  pos.valeur,
-                  new Date(pos.dateDebut),
-                  pos.dateFin ? new Date(pos.dateFin) : null,
-                  pos.tauxAmortissement
-                )
-              : new Flux(
-                  pos.possesseur.nom,
-                  pos.libelle,
-                  pos.valeur,
-                  new Date(pos.dateDebut),
-                  pos.dateFin ? new Date(pos.dateFin) : null,
-                  pos.tauxAmortissement || 0,
-                  pos.jour || 1
-                );
+          const fetchedPossessions = jsonData;
 
-            const valeurActuelle = possessionInstance.getValeur(new Date());
-
+          const updatedPossessions = fetchedPossessions.map(pos => {
+            const possessionInstance = new Possession(
+              pos.possesseur.nom,
+              pos.libelle,
+              pos.valeur,
+              new Date(pos.dateDebut),
+              pos.dateFin ? new Date(pos.dateFin) : null,
+              pos.tauxAmortissement || 0
+            );
             return {
               ...pos,
-              valeurActuelle
+              valeurActuelle: possessionInstance.getValeurApresAmortissement(new Date()) || pos.valeur
             };
           });
 
@@ -66,34 +56,30 @@ function PossessionList() {
     fetchData();
   }, []);
 
+  const determinePossessionType = (possession) => {
+    return possession.tauxAmortissement ? 'Bien Matériel' : 'Flux';
+  };
+
   const applyDate = () => {
     const updatedPossessions = possessions.map(possession => {
-      const possessionInstance = possession.tauxAmortissement
-        ? new BienMateriel(
-            possession.possesseur.nom,
-            possession.libelle,
-            possession.valeur,
-            new Date(possession.dateDebut),
-            possession.dateFin ? new Date(possession.dateFin) : null,
-            possession.tauxAmortissement
-          )
-        : new Flux(
-            possession.possesseur.nom,
-            possession.libelle,
-            possession.valeur,
-            new Date(possession.dateDebut),
-            possession.dateFin ? new Date(possession.dateFin) : null,
-            possession.tauxAmortissement || 0,
-            possession.jour || 1
-          );
+      const possessionInstance = new Possession(
+        possession.possesseur.nom,
+        possession.libelle,
+        possession.valeur,
+        new Date(possession.dateDebut),
+        possession.dateFin ? new Date(possession.dateFin) : null,
+        possession.tauxAmortissement || 0
+      );
 
-      const valeurActuelle = possessionInstance.getValeur(selectedDate);
+      const valeurActuelle = possessionInstance.getValeurApresAmortissement(selectedDate);
+      const updatedDateFin = selectedDate;
+      const possessionType = determinePossessionType(possession);
 
       return {
         ...possession,
-        dateFin: selectedDate.toISOString().split('T')[0],
-        valeurActuelle,
-        libelle: possession.libelle
+        dateFin: updatedDateFin.toISOString().split('T')[0],
+        valeurActuelle: valeurActuelle,
+        libelle: `${possession.libelle} (${possessionType})`
       };
     });
 
@@ -101,7 +87,9 @@ function PossessionList() {
 
     const totalCurrent = updatedPossessions.reduce((sum, pos) => sum + (pos.valeurActuelle || pos.valeur), 0);
     setTotalCurrentValue(totalCurrent);
-    setTotalValue(totalCurrent);
+
+    const total = updatedPossessions.reduce((sum, pos) => sum + (pos.valeurActuelle || pos.valeur), 0);
+    setTotalValue(total);
   };
 
   const handleUpdate = (poss) => {
@@ -193,7 +181,6 @@ function PossessionList() {
               <td>
                 <Button onClick={() => handleClose(index)} variant="info" size="sm" style={{ marginRight: '5px' }}>Fermer</Button>
                 <Button onClick={() => handleUpdate(poss)} variant="warning" size="sm" style={{ marginRight: '5px' }}>Mettre à jour</Button>
-                <Button onClick={() => handleDelete(index)} variant="danger" size="sm">Supprimer</Button>
               </td>
             </tr>
           ))}
@@ -225,23 +212,25 @@ function PossessionList() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleUpdateSubmit}>
-            <Form.Group controlId="formLibelle">
-              <Form.Label>Libelle</Form.Label>
+            <Form.Group controlId="libelle">
+              <Form.Label>Libellé</Form.Label>
               <Form.Control
                 type="text"
                 value={updateForm.libelle}
                 onChange={(e) => setUpdateForm({ ...updateForm, libelle: e.target.value })}
               />
             </Form.Group>
-            <Form.Group controlId="formDateFin">
-              <Form.Label>Date de Fin</Form.Label>
+            <Form.Group controlId="dateFin">
+              <Form.Label>Date de fin</Form.Label>
               <Form.Control
                 type="date"
                 value={updateForm.dateFin}
                 onChange={(e) => setUpdateForm({ ...updateForm, dateFin: e.target.value })}
               />
             </Form.Group>
-            <Button variant="primary" type="submit">Enregistrer</Button>
+            <Button variant="primary" type="submit">
+              Enregistrer les modifications
+            </Button>
           </Form>
         </Modal.Body>
       </Modal>
