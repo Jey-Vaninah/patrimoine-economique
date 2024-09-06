@@ -14,7 +14,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import './App.css';
+import '../App.css';
 
 ChartJS.register(
   LineElement,

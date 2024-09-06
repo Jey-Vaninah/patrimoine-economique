@@ -2,7 +2,8 @@ import cors from 'cors';
 import express from 'express';
 import fs from 'node:fs';
 import { DATABASE_PATH, getDateRange, getPossessionsFromData, mapToPossessionModel, readDatabase } from './utils.js';
-
+import Possession from '../models/possessions/Possession.js';
+import Flux from '../models/possessions/Flux.js';
 const app = express();
 const PORT = 5000;
 
@@ -48,26 +49,68 @@ app.get('/graphics', (req, res) => {
   const { dateDebut, dateFin, jour } = req.query;
 
   try {
-    const possessions = getPossessionsFromData(readDatabase()).map(pos => mapToPossessionModel(pos));
+    const possessions = getPossessionsFromData(readDatabase());
     const dates = getDateRange(dateDebut, dateFin, jour);
-
     return res.send(dates.map(date => {
-      const patrimoineValue = possessions.reduce((sum, pos) => {
-        return sum + (pos.getValeurApresAmortissement(date) || pos.valeur);
-      }, 0);
+      let patrimoineValue = 0;
+      possessions.forEach(pos => {
+        if (pos.type === "trainDeVie") {
+          let possessionInstance = new Flux(
+            pos.possesseur.nom,
+            pos.libelle,
+            pos.valeur,
+            new Date(pos.dateDebut),
+            pos.dateFin ? new Date(pos.dateFin) : null,
+            pos.tauxAmortissement || 0,
+            pos.jour
+          );
+
+          patrimoineValue -= possessionInstance.getValeur(date);
+        } else if (pos.type === "courant") {
+
+          let possessionInstance = new Flux(
+            pos.possesseur.nom,
+            pos.libelle,
+            pos.valeur,
+            new Date(pos.dateDebut),
+            pos.dateFin ? new Date(pos.dateFin) : null,
+            pos.tauxAmortissement || 0,
+            pos.jour
+          );
+
+          patrimoineValue += possessionInstance.getValeur(date);
+        }
+        else {
+          let possessionInstance = new Possession(
+            pos.possesseur.nom,
+            pos.libelle,
+            pos.valeur,
+            new Date(pos.dateDebut),
+            pos.dateFin ? new Date(pos.dateFin) : null,
+            pos.tauxAmortissement || 0
+          );
+
+          patrimoineValue += possessionInstance.getValeurApresAmortissement(date);
+        }
+
+      });
+
+      console.log(patrimoineValue);
+
       return { date, value: patrimoineValue }
     }));
-  } catch(error) {
+  } catch (error) {
     console.error("Error parsing JSON data:", error);
     res.status(500).send("Error parsing JSON data");
   }
 })
 
-app.put('/possession/:libelle', async (req, res) => {
-  const libelle = req.params.libelle;
+
+app.put('/possession/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
   const updatedData = req.body;
 
-  fs.readFile('./backend/dataBase.json', 'utf8', (err, data) => {
+  fs.readFile('./data/dataBase.json', 'utf8', (err, data) => {
     if (err) {
       return res.status(500).send("Error reading the file");
     }
@@ -82,7 +125,7 @@ app.put('/possession/:libelle', async (req, res) => {
 
       let patrimoineData = data1[patrimoineIndex];
       let possessions = patrimoineData.data.possessions;
-      let possessionIndex = possessions.findIndex(p => p.libelle === libelle);
+      let possessionIndex = possessions.findIndex(p => p.id === id);
 
       if (possessionIndex === -1) {
         return res.status(404).send("Possession not found");
@@ -92,7 +135,7 @@ app.put('/possession/:libelle', async (req, res) => {
       patrimoineData.data.possessions = possessions;
       data1[patrimoineIndex] = patrimoineData;
 
-      fs.writeFile('./backend/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
+      fs.writeFile('./data/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
         if (err) {
           return res.status(500).send("Error writing to the file");
         }
@@ -105,6 +148,7 @@ app.put('/possession/:libelle', async (req, res) => {
     }
   });
 });
+
 
 
 

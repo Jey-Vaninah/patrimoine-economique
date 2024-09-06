@@ -2,10 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import AddPossession from './components/AddPossession';
-import Navigation from './components/Navigation'; 
-import PossessionList from './PossessionList';
-import LineChartPage from './LineChartPage';
-
+import Navigation from './components/Navigation';
+import PossessionList from './components/PossessionList'; 
+import LineChartPage from './components/LineChartPage';
 
 function App() {
   return (

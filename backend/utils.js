@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import Possession from '../models/possessions/Possession.js';
 
-export const DATABASE_PATH = "./backend/dataBase.json";
+export const DATABASE_PATH = "./data/dataBase.json";
 export function getPossessionsFromData(fileContent) {
   const patrimoine = fileContent.find(e => e.model === "Patrimoine");
   return patrimoine.data.possessions;

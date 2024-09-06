@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../App.css'; 
 
 function AddPossession() {
   const [libelle, setLibelle] = useState("");
@@ -10,24 +9,26 @@ function AddPossession() {
   const [dateDebut, setDateDebut] = useState("");
   const [dateFin, setDateFin] = useState(""); 
   const [taux, setTaux] = useState("");
-  const [possesseur, setPossesseur] = useState("John Doe"); 
-  const [valeurConstante, setValeurConstante] = useState(null); 
+  const [possesseur, setPossesseur] = useState("John Doe");
+  const [type, setType] = useState(""); // New state for type
+  const [jour, setJour] = useState(""); // New state for jour
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const newPossession = {
       possesseur: {
         nom: possesseur,
       },
       libelle,
       valeur: parseFloat(valeur),
-      dateDebut,
-      dateFin: dateFin ? dateFin : null, 
-      tauxAmortissement: taux ? parseFloat(taux) : 0, 
-      valeurConstante
+      dateDebut: new Date(dateDebut).toISOString(), // Convert date to ISO format
+      dateFin: dateFin ? new Date(dateFin).toISOString() : null,
+      tauxAmortissement: taux ? parseFloat(taux) : 0,
+      type, // Add type to the payload
+      jour: jour ? parseInt(jour, 10) : null, // Add jour to the payload
     };
 
     try {
@@ -41,7 +42,7 @@ function AddPossession() {
 
       if (response.ok) {
         alert("Possession ajoutée avec succès !");
-        navigate("/"); 
+        navigate("/");
       } else {
         alert("Erreur lors de l'ajout de la possession.");
       }
@@ -77,6 +78,25 @@ function AddPossession() {
           />
         </Form.Group>
         <Form.Group className="mb-3">
+          <Form.Label>Type de Possession</Form.Label>
+          <Form.Select value={type} onChange={(e) => setType(e.target.value)} required>
+            <option value="">Choisissez un type</option>
+            <option value="bienMateriel">Bien Matériel</option>
+            <option value="argent">Argent</option>
+            <option value="courant">Courant</option>
+            <option value="trainDeVie">Train de Vie</option>
+          </Form.Select>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Jour</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Entrez le jour"
+            value={jour}
+            onChange={(e) => setJour(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Date Début</Form.Label>
           <Form.Control
             type="date"
@@ -103,25 +123,7 @@ function AddPossession() {
             onChange={(e) => setTaux(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Nom du Possesseur</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Entrez le nom du possesseur"
-            value={possesseur}
-            onChange={(e) => setPossesseur(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Valeur Constante</Form.Label>
-          <Form.Control
-            type="number"
-            step="0.01"
-            placeholder="Entrez la valeur constante"
-            value={valeurConstante || ''}
-            onChange={(e) => setValeurConstante(e.target.value ? parseFloat(e.target.value) : null)}
-          />
-        </Form.Group>
+
         <Button variant="primary" type="submit">
           Ajouter
         </Button>

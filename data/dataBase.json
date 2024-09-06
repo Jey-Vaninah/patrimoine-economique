@@ -16,6 +16,8 @@
           "possesseur": {
             "nom": "John Doe"
           },
+          "id": 1,
+          "type": "bienMateriel",
           "libelle": "MacBook Pro",
           "valeur": 4300000,
           "dateDebut": "2023-12-25T00:00:00.000Z",
@@ -26,6 +28,8 @@
           "possesseur": {
             "nom": "John Doe"
           },
+          "id": 2,
+          "type": "argent",
           "libelle": "Compte épargne",
           "valeur": 500000,
           "dateDebut": "2019-01-06T00:00:00.000Z",
@@ -36,6 +40,8 @@
           "possesseur": {
             "nom": "John Doe"
           },
+          "id": 3,
+          "type": "bienMateriel",
           "libelle": "Clothes",
           "valeur": 2000000,
           "dateDebut": "2020-01-01T00:00:00.000Z",
@@ -46,6 +52,8 @@
           "possesseur": {
             "nom": "John Doe"
           },
+          "id": 4,
+          "type": "courant",
           "libelle": "Alternance",
           "valeur": 600000,
           "dateDebut": "2023-02-13T00:00:00.000Z",
@@ -58,10 +66,12 @@
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Survie",
+          "id": 5,
+          "type": "trainDeVie",
+          "libelle": "Survie ",
           "valeur": 300000,
           "dateDebut": "2023-02-13T00:00:00.000Z",
-          "dateFin": null,
+          "dateFin": "",
           "tauxAmortissement": 0,
           "jour": 2,
           "valeurConstante": -300000
@@ -70,23 +80,15 @@
           "possesseur": {
             "nom": "John Doe"
           },
-          "libelle": "Redmi Note 9",
+          "id": 6,
+          "type": "bienMateriel",
+          "libelle": "Redmi Note 9 lost",
           "valeur": 800000,
           "dateDebut": "2022-12-29T00:00:00.000Z",
-          "dateFin": null,
+          "dateFin": "",
           "tauxAmortissement": 15
-        },
-        {
-          "possesseur": {
-            "nom": "John Doe"
-          },
-          "libelle": "old;kvze",
-          "valeur": 20,
-          "dateDebut": "2024-09-06",
-          "dateFin": null,
-          "tauxAmortissement": 0,
-          "valeurConstante": null
         }
+        
       ]
     }
   }
