@@ -9,12 +9,12 @@ import {
   Title,
   Tooltip,
   Legend
- } from 'chart.js';
+} from 'chart.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
 import '../App.css';
+import { axiosInstance } from '../utils/axios';
 
 ChartJS.register(
   LineElement,
@@ -41,14 +41,13 @@ function LineChartPage() {
 
   const fetchRangeData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/graphics', {
+      const fetchedData = await axiosInstance.get("/graphics", {
         params: {
           dateDebut,
           dateFin,
           jour: jour || 0
         },
-      });
-      const fetchedData = response.data;
+      }).then(response => response.data);
 
       setRangeData({
         labels: fetchedData.map(res => new Date(res.date).toLocaleString()),

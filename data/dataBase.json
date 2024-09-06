@@ -87,8 +87,19 @@
           "dateDebut": "2022-12-29T00:00:00.000Z",
           "dateFin": "",
           "tauxAmortissement": 15
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "betay",
+          "valeur": 2000,
+          "dateDebut": "2024-09-06T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0,
+          "type": "bienMateriel",
+          "jour": null
         }
-        
       ]
     }
   }

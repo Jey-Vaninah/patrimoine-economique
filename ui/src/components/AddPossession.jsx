@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { axiosInstance } from "../utils/axios";
 
 function AddPossession() {
   const [libelle, setLibelle] = useState("");
   const [valeur, setValeur] = useState("");
   const [dateDebut, setDateDebut] = useState("");
-  const [dateFin, setDateFin] = useState(""); 
+  const [dateFin, setDateFin] = useState("");
   const [taux, setTaux] = useState("");
   const [possesseur, setPossesseur] = useState("John Doe");
   const [type, setType] = useState(""); // New state for type
@@ -32,20 +33,9 @@ function AddPossession() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/possession", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPossession),
-      });
-
-      if (response.ok) {
-        alert("Possession ajoutée avec succès !");
-        navigate("/");
-      } else {
-        alert("Erreur lors de l'ajout de la possession.");
-      }
+      await axiosInstance.post("/possession", newPossession)
+      alert("Possession ajoutée avec succès !");
+      navigate("/");
     } catch (error) {
       console.error("Erreur lors de l'ajout de la possession :", error);
       alert("Erreur lors de l'ajout de la possession.");
