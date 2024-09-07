@@ -110,7 +110,7 @@ app.put('/possession/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10);
   const updatedData = req.body;
 
-  fs.readFile('./data/dataBase.json', 'utf8', (err, data) => {
+  fs.readFile('./backend/data/dataBase.json', 'utf8', (err, data) => {
     if (err) {
       return res.status(500).send("Error reading the file");
     }
@@ -135,7 +135,7 @@ app.put('/possession/:id', async (req, res) => {
       patrimoineData.data.possessions = possessions;
       data1[patrimoineIndex] = patrimoineData;
 
-      fs.writeFile('./data/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
+      fs.writeFile('./backend/data/dataBase.json', JSON.stringify(data1, null, 2), (err) => {
         if (err) {
           return res.status(500).send("Error writing to the file");
         }

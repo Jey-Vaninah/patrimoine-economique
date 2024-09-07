@@ -102,7 +102,6 @@ function PossessionList() {
         valeurActuelle = possessionInstance.getValeurApresAmortissement(selectedDate);
       }
 
-
       const updatedDateFin = selectedDate;
       const possessionType = determinePossessionType(possession);
 
@@ -159,11 +158,10 @@ function PossessionList() {
     }
   };
 
-
   const handleClose = async (index) => {
     const possessionToClose = possessions[index];
     try {
-      await axiosInstance.put(`/possession/${possessionToClose.libelle}`, {
+      await axiosInstance.put(`/possession/${possessionToClose.id}`, {
         ...possessionToClose,
         dateFin: new Date().toISOString().split('T')[0]
       });
@@ -172,17 +170,6 @@ function PossessionList() {
       setPossessions(updatedPossessions);
     } catch (error) {
       console.error('Error closing possession:', error);
-    }
-  };
-
-  const handleDelete = async (index) => {
-    const possessionToDelete = possessions[index];
-    try {
-      await axiosInstance.delete(`/possession/${possessionToDelete.libelle}`);
-      const updatedPossessions = possessions.filter((_, i) => i !== index);
-      setPossessions(updatedPossessions);
-    } catch (error) {
-      console.error('Error deleting possession:', error);
     }
   };
 
@@ -218,11 +205,6 @@ function PossessionList() {
               </td>
             </tr>
           ))}
-
-          {/* <tr className="total-row">
-          <td colSpan="7" className="text-end font-weight-bold">Valeur Totale Actuelle:</td>
-          <td className="font-weight-bold">{totalCurrentValue.toFixed(2)}</td>
-        </tr> */}
         </tbody>
       </Table>
 
@@ -247,7 +229,7 @@ function PossessionList() {
         <Modal.Body>
           <Form onSubmit={handleUpdateSubmit}>
             <Form.Group controlId="libelle">
-              <Form.Label>Libellé</Form.Label>
+              <Form.Label>Libelle</Form.Label>
               <Form.Control
                 type="text"
                 value={updateForm.libelle}
@@ -255,7 +237,7 @@ function PossessionList() {
               />
             </Form.Group>
             <Form.Group controlId="dateFin">
-              <Form.Label>Date de fin</Form.Label>
+              <Form.Label>Date Fin</Form.Label>
               <Form.Control
                 type="date"
                 value={updateForm.dateFin}
@@ -263,12 +245,11 @@ function PossessionList() {
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Enregistrer les modifications
+              Mettre à jour
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
-
     </>
   );
 }
