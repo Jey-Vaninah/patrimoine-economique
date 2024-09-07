@@ -7,7 +7,7 @@ import Possession from '../../../models/possessions/Possession';
 import Flux from '../../../models/possessions/Flux';
 import { axiosInstance } from '../utils/axios';
 
-function PossessionList() {
+function ListPossession() {
   const [possessions, setPossessions] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalValue, setTotalValue] = useState(0);
@@ -254,7 +254,7 @@ function PossessionList() {
   );
 }
 
-export default PossessionList;
+export default ListPossession;
 
 
 
